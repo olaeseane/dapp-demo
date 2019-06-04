@@ -31,19 +31,16 @@ class App extends React.Component {
     this.voting.setProvider(this.web3.currentProvider);
   }
 
+/*
   watchEvents = async () => {
-    await this.instance
-        .votedEvent(
-            {},
-            {
-              fromBlock: 0,
-              toBlock: "latest"
-            }
-        )
-        .watch((error, event) => {
-          this.setState({ progress: false });
-        });
+    await this.instance.events.allEvents({ fromBlock: 0 }, (error, event) => {
+      this.setState({ progress: false });
+    });
+    //  this.instance.events.allEvents().on("data", event => {
+    //   console.log(event);
+    // });
   };
+*/
 
   handleVote = async (id, event) => {
     this.setState({ progress: true });
@@ -65,7 +62,6 @@ class App extends React.Component {
     try {
       account = await this.web3.eth.getCoinbase();
       this.instance = await this.voting.deployed();
-      this.watchEvents();
       number = (await this.instance.getNumberVariants()).toNumber();
       console.error("number", number);
       name = await this.instance.name();
@@ -74,12 +70,12 @@ class App extends React.Component {
         variants.push({ name, description, votes });
       }
       hasVoted = await this.instance.isVoted(account);
+      await this.instance.events.allEvents({ fromBlock: 0 }, () => {
+        this.setState({ progress: false });
+      });
     } catch (err) {
       console.error(err);
     }
-
-    // if (account === null || name === null || variants.length === 0)
-    //   error = true;
 
     this.setState({
       account,
