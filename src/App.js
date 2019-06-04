@@ -31,17 +31,6 @@ class App extends React.Component {
     this.voting.setProvider(this.web3.currentProvider);
   }
 
-/*
-  watchEvents = async () => {
-    await this.instance.events.allEvents({ fromBlock: 0 }, (error, event) => {
-      this.setState({ progress: false });
-    });
-    //  this.instance.events.allEvents().on("data", event => {
-    //   console.log(event);
-    // });
-  };
-*/
-
   handleVote = async (id, event) => {
     this.setState({ progress: true });
     try {
@@ -63,14 +52,13 @@ class App extends React.Component {
       account = await this.web3.eth.getCoinbase();
       this.instance = await this.voting.deployed();
       number = (await this.instance.getNumberVariants()).toNumber();
-      console.error("number", number);
       name = await this.instance.name();
       for (let i = 0; i < number; i++) {
         const { name, description, votes } = await this.instance.variants(i);
         variants.push({ name, description, votes });
       }
       hasVoted = await this.instance.isVoted(account);
-      await this.instance.events.allEvents({ fromBlock: 0 }, () => {
+      await this.instance.events.VotedEvent({ fromBlock: 0 }, () => {
         this.setState({ progress: false });
       });
     } catch (err) {
@@ -88,7 +76,7 @@ class App extends React.Component {
   render() {
     const { account, loading, progress, voting } = this.state;
 
-    console.log(this.state);
+    console.log('this.state->',this.state);
     return (
       <div>
         <ui5-shellbar primary-title={this.props.label} logo={this.props.logo} />

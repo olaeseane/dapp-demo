@@ -2,6 +2,7 @@
   "name": "dapp-demo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@ui5/webcomponents": "^0.11.1",
     "react": "^16.8.6",

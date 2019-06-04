@@ -14,17 +14,17 @@ contract Voting {
 
     mapping(address => bool) public isVoted;
 
-    event votedEvent (
+    event VotedEvent (
         uint indexed _variantId
     );
 
     constructor() public {
         name = 'What is the best platform for DAPP development?';
 
-        variants.push(Variant('Ethereum + Quorum', 'Tropical plant with an edible fruit', 0));
-        variants.push(Variant('EOS', 'Tropical plant with an edible fruit', 0));
-        variants.push(Variant('TRON', 'Tropical plant with an edible fruit', 0));
-        variants.push(Variant('Telegram Open Network', 'Tropical plant with an edible fruit', 0));
+        variants.push(Variant('Ethereum + Quorum', 'Ethereum is a global, open-source platform for decentralized applications', 0));
+        variants.push(Variant('EOS', 'EOSIO is a blockchain platform designed for the real world', 0));
+        variants.push(Variant('TRON', 'TRON is one of the largest blockchain-based operating systems in the world', 0));
+        variants.push(Variant('Telegram Open Network', 'Fast, secure and scalable blockchainand network project, capable of handling millions of transactions per second', 0));
     }
 
     modifier hasNotVoted() {
@@ -44,7 +44,7 @@ contract Voting {
     function vote(uint _variantId) public validVariantId(_variantId) hasNotVoted {
         variants[_variantId].votes++;
         isVoted[msg.sender] = true;
-        emit votedEvent(_variantId);
+        emit VotedEvent(_variantId);
     }
 
     function getVotesCount(uint _variantId) public view validVariantId(_variantId) returns (uint) {
